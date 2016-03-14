@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:textColor">@color/iron</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:indeterminateTint">@android:color/white</item>
+    </style>
+
+    <style name="AppTheme.Dark" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+
+        <item name="android:windowBackground">@color/white</item>
+
+        <item name="colorControlNormal">@color/iron</item>
+        <item name="colorControlActivated">@color/iron</item>
+        <item name="colorControlHighlight">@color/iron</item>
+        <item name="android:textColor">@color/iron</item>
+        <item name="android:editTextColor">@color/primary</item>
+        <item name="android:textColorHint">@color/iron</item>
+
+        <item name="colorButtonNormal">@color/primary_darker</item>
+        <item name="android:colorButtonNormal">@color/primary_darker</item>
+    </style>
+
+    <style name="AppTheme.Dark.Dialog" parent="Theme.AppCompat.Dialog">
+        <item name="colorAccent">@color/white</item>
+        <item name="android:textColorPrimary">@color/iron</item>
+        <item name="android:background">@color/primary</item>
+    </style>
+    >
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+</resources>
