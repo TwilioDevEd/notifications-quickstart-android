@@ -42,8 +42,8 @@ public class RegistrationIntentService extends IntentService {
     private static final String TAG = "RegIntentService";
     private BindingResource bindingResource;
     private static final String schema = "http";
-    private static final String host = "192.168.42.33";
-    private static final int port = 5000;
+    private static final String host = "YOUR-SERVER-HOST-NAME";
+    private static final int port = 3000;
 
     public RegistrationIntentService() {
         super(TAG);
