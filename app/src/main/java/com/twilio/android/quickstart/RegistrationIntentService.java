@@ -43,7 +43,7 @@ public class RegistrationIntentService extends IntentService {
     private BindingResource bindingResource;
     private static final String schema = "http";
     private static final String host = "YOUR-SERVER-HOST-NAME";
-    private static final int port = 3000;
+    private static final int port = 80;
 
     public RegistrationIntentService() {
         super(TAG);
