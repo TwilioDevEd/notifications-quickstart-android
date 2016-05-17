@@ -9,9 +9,11 @@ You can download the Node notifications web app from [here](https://github.com/T
 
 ## Setting Up The Application
 
-After downloading or cloning the app, open the app in Android studio by selecting the `build.gradle` file in the root directory. Android Studio will download the app's dependencies using gradle. 
+After downloading or cloning the app, you will need to provide a `google-services.json` file for the app - otherwise, you will get an error when you try and sync with Gradle. The default applicationId for the app (defined in `app/build.gradle`) is `com.testapp`. 
 
-Use the Google Services [tool](https://developers.google.com/cloud-messaging/android/client) to generate a 'google-services.json' file for your app. This file gives your app access credentials to GCM.
+Use that application id when you register a new project with Google Services using this online tool [Google Cloud Messaging Registration](https://developers.google.com/cloud-messaging/android/client). That web site will generate a `google-services.json` file for your app. Download that file and put it into the app folder of the project you just downloaded. This file gives your app access credentials to GCM.
+
+Now, open the app in Android studio by selecting the `build.gradle` file in the root directory. Android Studio will download the app's dependencies using gradle.
 
 Next, in the `RegistrationIntentService.java` file, on this line,
 
