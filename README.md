@@ -3,28 +3,28 @@
 Twilio Notifications starter Android application in Java
 
 This application should give you a ready-made starting point for writing your
-own notification-integrated apps with Twilio Notifications. Before we begin, you need to run the associated notifications web app. 
+own notification-integrated apps with Twilio Notifications. Before we begin, you will need to setup and run the associated user notifications quick start web app. The Android application will make a call to the web application to register itself and create a binding. The web app comes with a script `notify.js` that will send a notification through Twilio to the app, using the identity that you provide when you run the application.
 
 You can download the Node notifications web app from [here](https://github.com/TwilioDevEd/notifications-quickstart-node).
 
 ## Setting Up The Application
 
-After downloading or cloning the app, open the app in Android studio and the 
-project will immediately build the dependencies using gradle. Right click on the 'notification-client-0.0.1-SNAPSHOT.jar' dependency in the root directory and click 'Add as a Library'. Use to Google Services [tool](https://developers.google.com/cloud-messaging/android/client) to generate a 'google-services.json' file for your app. This file gives your app access credentials to GCM.
+After downloading or cloning the app, open the app in Android studio by selecting the `build.gradle` file in the root directory. Android Studio will download the app's dependencies using gradle. 
 
-Next, in the MainActivity file, on this line,
+Use the Google Services [tool](https://developers.google.com/cloud-messaging/android/client) to generate a 'google-services.json' file for your app. This file gives your app access credentials to GCM.
 
-        editor.putString(MwcDemoPreferences.HOST,"YOUR_WEB_APP_HERE");
+Next, in the `RegistrationIntentService.java` file, on this line,
 
-Replace the URL with the address of your server. Then on these two lines in the onHandleIntent method of RegistrationIntentService.java
+        private static final String host = "YOUR-SERVER-HOST-NAME";
 
-        String identity = sharedPreferences.getString(IDENTITY, "IDENTITY_HERE");
-        String endpoint = sharedPreferences.getString(ENDPOINT, "ENDPOINT_HERE");
-        
+Replace YOUR-SERVER-HOST-NAME with the address of your server - for instance, from ngrok. You may also need to update the scheme and port on these  lines:
 
-replace "IDENTITY_HERE" and "ENDPOINT_HERE" with your desired values.
+        private static final String schema = "http";
+        private static final int port = 80;
 
-Once you've done that you can compile & run the app. Once you login with your Twilio credentials, it'll register your device with GCM and return a JSON response object if successful. After that, run the notify.js script in the web app repo
+Make sure your notification quick start web app is running, and then go ahead and launch the app. You can run this app on a device or on the Android emulator. You will need to provide an identity and an endpoint to use on the app's only screen. Tap the button and send the request over to your notification web service, which will update Twilio with the device token that identifies this app on your phone, tablet or emulator.
+
+After that, run the notify.js script from the notifications quick start as a command line tool:
 
         node notify.js YOUR_IDENTITY
 
