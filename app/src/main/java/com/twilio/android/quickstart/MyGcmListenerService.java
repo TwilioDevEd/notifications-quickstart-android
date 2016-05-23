@@ -47,7 +47,11 @@ public class MyGcmListenerService extends GcmListenerService {
          * it when the app is in the foreground and the notification gets delivered directly to it
          * without being added to the Notification Center.
          */
-        String body = data.getString("body");
+        Bundle notification = data.getBundle("notification");
+        String body = "";
+        if (notification != null) {
+            body = notification.getString("body");
+        }
         Log.d(TAG, "From: " + from);
         Log.d(TAG, "Body: " + body);
 
