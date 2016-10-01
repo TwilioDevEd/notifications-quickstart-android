@@ -43,15 +43,16 @@ public class MyGcmListenerService extends GcmListenerService {
     @Override
     public void onMessageReceived(String from, Bundle data) {
         /**
-         * Our Node.js server adds the message body also to the Data bundle so that we can retrieve
-         * it when the app is in the foreground and the notification gets delivered directly to it
-         * without being added to the Notification Center.
+         * Our Node.js server adds the message body to the Data bundle so that we can retrieve
+         * it an show a simple notification as we want.
+         *
+         * Notification resource parameters are mapped as follows:
+         * Body --> twi_body
+         * Title --> twi_title
+         * Sound --> twi_sound
+         * Action --> twi_action
          */
-        Bundle notification = data.getBundle("notification");
-        String body = "";
-        if (notification != null) {
-            body = notification.getString("body");
-        }
+        String body = data.getString("twi_body");
         Log.d(TAG, "From: " + from);
         Log.d(TAG, "Body: " + body);
 

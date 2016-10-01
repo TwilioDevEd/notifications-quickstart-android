@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
 
     TextView _resultText;
     EditText _identityText;
-    EditText _endpointText;
     Button _createBindingButton;
     private WakefulBroadcastReceiver mRegistrationBroadcastReceiver;
     ProgressDialog _progressDialog;
@@ -59,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
                 new IntentFilter(QuickstartPreferences.REGISTRATION_COMPLETE));
         setContentView(R.layout.activity_main);
         _identityText = (EditText) findViewById(R.id.input_identity);
-        _endpointText = (EditText) findViewById(R.id.input_endpoint);
+        _identityText.setText(PreferenceManager.getDefaultSharedPreferences(this).getString(IDENTITY, null));
         _createBindingButton = (Button) findViewById(R.id.btn_create_binding);
         _resultText = (TextView) findViewById(R.id.output_result);
         _resultText.setVisibility(View.INVISIBLE);
@@ -84,14 +83,11 @@ public class MainActivity extends AppCompatActivity {
         _progressDialog.setMessage(getString(R.string.CreatingBindingText));
         _progressDialog.show();
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(IDENTITY, _identityText.getText().toString());
-        editor.putString(ENDPOINT, _endpointText.getText().toString());
-        editor.commit();
-
+        String identity = _identityText.getText().toString();
+        
         // Start IntentService to register this application with GCM.
         Intent intent = new Intent(this, RegistrationIntentService.class);
+        intent.putExtra(IDENTITY, identity);
         startService(intent);
     }
 
