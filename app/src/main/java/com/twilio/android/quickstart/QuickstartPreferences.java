@@ -22,4 +22,5 @@ public class QuickstartPreferences {
     public static final String REGISTRATION_COMPLETE = "registrationComplete";
     public static final String IDENTITY = "Identity";
     public static final String ENDPOINT = "Endpoint";
+    public static final String TOKEN= "Token";
 }

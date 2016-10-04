@@ -5,4 +5,4 @@ build/
 /local.properties
 .DS_Store
 /captures
-google-services.json
+/app/google-services.json

@@ -64,7 +64,32 @@ public class RegistrationIntentService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
+        //Initialize registration parameters: identity, endpoint and token
+        //And track if any of them changed otherwise we will not create a new Binding
+        boolean identityChanged = false;
+        boolean endpointChanged = false;
+        boolean tokenChanged = false;
+
+        String identity = sharedPreferences.getString(IDENTITY, null);
+        String newIdentity = intent.getStringExtra(IDENTITY);
+
+        //Only update identity if old and new are not equal
+        if (newIdentity != null && !newIdentity.equals(identity)) {
+            Log.d(TAG, "Old Identity: " + identity);
+            identity = newIdentity;
+            identityChanged = true;
+            sharedPreferences.edit().putString(IDENTITY, identity).apply();
+        }
+
+
+        Log.i(TAG,"Identity: " + identity);
+
+        String endpoint = sharedPreferences.getString(ENDPOINT, null);
+        String token = sharedPreferences.getString(TOKEN, null);
+
+
         try {
+
             // [START register_for_gcm]
             // Initially this call goes out to the network to retrieve the token, subsequent calls
             // are local.
@@ -72,18 +97,35 @@ public class RegistrationIntentService extends IntentService {
             // See https://developers.google.com/cloud-messaging/android/start for details on this file.
             // [START get_token]
             InstanceID instanceID = InstanceID.getInstance(this);
-            String token = instanceID.getToken(getString(R.string.gcm_defaultSenderId),
+            String newToken = instanceID.getToken(getString(R.string.gcm_defaultSenderId),
                     GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
             // [END get_token]
-            Log.i(TAG, "GCM Registration Token: " + token);
 
-            String identity = sharedPreferences.getString(IDENTITY, "Bob");
-            String endpoint = sharedPreferences.getString(ENDPOINT, "Bob's Moto E");
+            //Note if token has changed
+            tokenChanged = !newToken.equals(token);
+            if (tokenChanged){
+                Log.d(TAG, "Old GCM Registration Token: " + token);
+                token = newToken;
+                sharedPreferences.edit().putString(TOKEN, token).apply();
+            }
+            Log.i(TAG, "GCM Registration Token: " + newToken);
 
-            Log.i(TAG,"Identity = " + identity);
-            Log.i(TAG,"Endpoint = " + endpoint);
 
-            sendRegistrationToServer(identity, endpoint, token);
+            //If there is no previous endpoint stored or there is a new Identity then create a new endpoint
+            //This allows us to maintain stability of Endpoint even if instanceID changes without the identity changing
+            if (endpoint == null || identityChanged){
+                String newEndpoint = identity + "@" + instanceID.getId();
+                Log.d(TAG, "Old Endpoint: " + endpoint);
+                endpoint = newEndpoint;
+                sharedPreferences.edit().putString(ENDPOINT, endpoint).apply();
+            }
+            Log.i(TAG, "Endpoint: " + endpoint);
+
+
+            if (identityChanged || endpointChanged || tokenChanged) {
+                Log.i(TAG, "Some binding attributes have changed, creating new Binding");
+                sendRegistrationToServer(identity, endpoint, token);
+            }
 
             // You should store a boolean that indicates whether the generated token has been
             // sent to your server. If the boolean is false, send the token to your server,
