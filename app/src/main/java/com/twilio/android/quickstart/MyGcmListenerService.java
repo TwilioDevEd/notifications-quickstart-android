@@ -87,7 +87,7 @@ public class MyGcmListenerService extends GcmListenerService {
 
         String title = "GCM Message";
 
-        if (title != null){
+        if (pTitle != null){
             title = pTitle;
         }
 
