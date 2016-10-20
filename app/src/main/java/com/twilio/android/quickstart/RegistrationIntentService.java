@@ -28,7 +28,9 @@ import com.google.android.gms.iid.InstanceID;
 import com.twilio.notification.api.BindingResource;
 
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -42,7 +44,7 @@ public class RegistrationIntentService extends IntentService {
     private static final String TAG = "RegIntentService";
     private BindingResource bindingResource;
     private static final String schema = "http";
-    private static final String host = "myserver.com"; //Do NOT include http://
+    private static final String host = "7832b557.ngrok.io"; //Do NOT include http://
     private static final int port = 80;
 
     public RegistrationIntentService() {
@@ -72,6 +74,8 @@ public class RegistrationIntentService extends IntentService {
 
         String identity = sharedPreferences.getString(IDENTITY, null);
         String newIdentity = intent.getStringExtra(IDENTITY);
+
+        boolean sentToken = sharedPreferences.getBoolean(SENT_TOKEN_TO_SERVER, false);
 
         //Only update identity if old and new are not equal
         if (newIdentity != null && !newIdentity.equals(identity)) {
@@ -110,7 +114,6 @@ public class RegistrationIntentService extends IntentService {
             }
             Log.i(TAG, "GCM Registration Token: " + newToken);
 
-
             //If there is no previous endpoint stored or there is a new Identity then create a new endpoint
             //This allows us to maintain stability of Endpoint even if instanceID changes without the identity changing
             if (endpoint == null || identityChanged){
@@ -122,8 +125,8 @@ public class RegistrationIntentService extends IntentService {
             Log.i(TAG, "Endpoint: " + endpoint);
 
 
-            if (identityChanged || endpointChanged || tokenChanged) {
-                Log.i(TAG, "Some binding attributes have changed, creating new Binding");
+            if (!sentToken || identityChanged || endpointChanged || tokenChanged) {
+                Log.i(TAG, "Some binding attributes have changed or binding creation have failed last time, creating new Binding");
                 sendRegistrationToServer(identity, endpoint, token);
             }
 
@@ -151,6 +154,9 @@ public class RegistrationIntentService extends IntentService {
     private void sendRegistrationToServer(String identity, String endpoint, String token) throws IOException {
         Call<Void> call = bindingResource.createBinding(identity, endpoint, token, "gcm");
         Response<Void> response = call.execute();
+        if (!response.isSuccess()){
+            throw new RuntimeException("Failed to send token to server. \n" + response.errorBody().string());
+        }
     }
 
 }
