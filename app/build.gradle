@@ -10,7 +10,7 @@ android {
     buildToolsVersion "25.0.2"
 
     defaultConfig {
-        applicationId "com.twilio.android.quickstart"
+        applicationId "com.testapp"
         minSdkVersion 21
         targetSdkVersion 23
         versionCode 1
