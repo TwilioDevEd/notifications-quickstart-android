@@ -9,9 +9,11 @@ You can download the Node notifications web app from [here](https://github.com/T
 
 ## Setting Up The Application
 
+The application uses [Firebase Cloud Messaging](https://firebase.google.com/docs/cloud-messaging/) (FCM) from Google, the successor to Google Cloud Messaging (GCM)
+
 After downloading or cloning the app, you will need to provide a `google-services.json` file for the app - otherwise, you will get an error when you try and sync with Gradle. The default applicationId for the app (defined in `app/build.gradle`) is `com.testapp`. 
 
-Use that application id when you register a new project with Google Services using this online tool [Google Cloud Messaging Registration](https://developers.google.com/cloud-messaging/android/client). That web site will generate a `google-services.json` file for your app. Download that file and put it into the app folder of the project you just downloaded. This file gives your app access credentials to GCM.
+Use that application id when you register a new project with Firebase using this online tool [Firebase Console](https://console.firebase.google.com/). That web site will generate a `google-services.json` file for your app. Download that file and put it into the app folder of the project you just downloaded. This file gives your app access credentials to FCM. You could also use the Firebase Assistant in Android Studio, under the Tools Menu.
 
 Now, open the app in Android studio by selecting the `build.gradle` file in the root directory. Android Studio will download the app's dependencies using gradle.
 
@@ -21,8 +23,8 @@ Next, in the `RegistrationIntentService.java` file, on this line,
 
 Replace YOUR-SERVER-HOST-NAME with the address of your server - for instance, from ngrok. You may also need to update the scheme and port on these  lines:
 
-        private static final String schema = "http";
-        private static final int port = 80;
+        private static final String schema = "https";
+        private static final int port = 443;
 
 Make sure your notification quick start web app is running, and then go ahead and launch the app. You can run this app on a device or on the Android emulator. You will need to provide an identity and an endpoint to use on the app's only screen. Tap the button and send the request over to your notification web service, which will update Twilio with the device token that identifies this app on your phone, tablet or emulator.
 

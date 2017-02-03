@@ -2,42 +2,21 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.twilio.android.quickstart">
 
-    <!-- [START gcm_permission] -->
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <permission android:name="com.twilio.android.quickstart.permission.C2D_MESSAGE"
-        android:protectionLevel="signature" />
-
-    <uses-permission android:name="com.twilio.android.quickstart.permission.C2D_MESSAGE" />
-
-    <!-- [END gcm_permission] -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_twilio_logo_notif"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
 
-        <!-- [START gcm_receiver] -->
-        <receiver
-            android:name="com.google.android.gms.gcm.GcmReceiver"
-            android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND">
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-            </intent-filter>
-        </receiver>
-        <!-- [END gcm_receiver] -->
 
-
-        <!-- [START gcm_listener] -->
+        <!-- [START fcm_listener] -->
         <service
-            android:name="com.twilio.android.quickstart.MyGcmListenerService"
-            android:exported="false">
+            android:name="com.twilio.android.quickstart.MyFcmListenerService">
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <!-- [END gcm_listener] -->
+        <!-- [END fcm_listener] -->
         <!-- [START instanceId_listener] -->
         <service
             android:name="com.twilio.android.quickstart.MyInstanceIDListenerService"

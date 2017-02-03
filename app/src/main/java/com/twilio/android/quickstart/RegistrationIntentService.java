@@ -23,29 +23,30 @@ import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.google.android.gms.iid.InstanceID;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.twilio.notification.api.BindingResource;
 
 import java.io.IOException;
-import java.lang.annotation.Annotation;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
-import static com.twilio.android.quickstart.QuickstartPreferences.*;
+import static com.twilio.android.quickstart.QuickstartPreferences.ENDPOINT;
+import static com.twilio.android.quickstart.QuickstartPreferences.IDENTITY;
+import static com.twilio.android.quickstart.QuickstartPreferences.REGISTRATION_COMPLETE;
+import static com.twilio.android.quickstart.QuickstartPreferences.SENT_TOKEN_TO_SERVER;
+import static com.twilio.android.quickstart.QuickstartPreferences.TOKEN;
 
 
 public class RegistrationIntentService extends IntentService {
 
     private static final String TAG = "RegIntentService";
     private BindingResource bindingResource;
-    private static final String schema = "http";
-    private static final String host = "7832b557.ngrok.io"; //Do NOT include http://
-    private static final int port = 80;
+    private static final String schema = "https";
+    private static final String host = "YOUR-SERVER-HOST-NAME"; //Do NOT include http://
+    private static final int port = 443;
 
     public RegistrationIntentService() {
         super(TAG);
@@ -94,30 +95,23 @@ public class RegistrationIntentService extends IntentService {
 
         try {
 
-            // [START register_for_gcm]
-            // Initially this call goes out to the network to retrieve the token, subsequent calls
-            // are local.
-            // R.string.gcm_defaultSenderId (the Sender ID) is typically derived from google-services.json.
-            // See https://developers.google.com/cloud-messaging/android/start for details on this file.
             // [START get_token]
-            InstanceID instanceID = InstanceID.getInstance(this);
-            String newToken = instanceID.getToken(getString(R.string.gcm_defaultSenderId),
-                    GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
+            String newToken = FirebaseInstanceId.getInstance().getToken();
             // [END get_token]
 
             //Note if token has changed
             tokenChanged = !newToken.equals(token);
             if (tokenChanged){
-                Log.d(TAG, "Old GCM Registration Token: " + token);
+                Log.d(TAG, "Old FCM Registration Token: " + token);
                 token = newToken;
                 sharedPreferences.edit().putString(TOKEN, token).apply();
             }
-            Log.i(TAG, "GCM Registration Token: " + newToken);
+            Log.i(TAG, "FCM Registration Token: " + newToken);
 
             //If there is no previous endpoint stored or there is a new Identity then create a new endpoint
             //This allows us to maintain stability of Endpoint even if instanceID changes without the identity changing
             if (endpoint == null || identityChanged){
-                String newEndpoint = identity + "@" + instanceID.getId();
+                String newEndpoint = identity + "@" + FirebaseInstanceId.getInstance().getId();
                 Log.d(TAG, "Old Endpoint: " + endpoint);
                 endpoint = newEndpoint;
                 sharedPreferences.edit().putString(ENDPOINT, endpoint).apply();
@@ -134,7 +128,6 @@ public class RegistrationIntentService extends IntentService {
             // sent to your server. If the boolean is false, send the token to your server,
             // otherwise your server should have already received the token.
             sharedPreferences.edit().putBoolean(SENT_TOKEN_TO_SERVER, true).apply();
-            // [END register_for_gcm]
         } catch (Exception e) {
             Log.d(TAG, "Failed to complete token refresh", e);
             // If an exception happens while fetching the new token or updating our registration data

@@ -22,28 +22,28 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.google.android.gms.gcm.GcmListenerService;
+import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
 
-public class MyGcmListenerService extends GcmListenerService {
+import java.util.Map;
 
-    private static final String TAG = "MyGcmListenerService";
+public class MyFcmListenerService extends FirebaseMessagingService {
+
+    private static final String TAG = "MyFcmListenerService";
 
     /**
      * Called when message is received.
      *
-     * @param from SenderID of the sender.
-     * @param data Data bundle containing message data as key/value pairs.
-     *             For Set of keys use data.keySet().
+     * @param message The remote message, containing from, and message data as key/value pairs.
      */
     // [START receive_message]
     @Override
-    public void onMessageReceived(String from, Bundle data) {
+    public void onMessageReceived(RemoteMessage message) {
         /**
-         * Our Node.js server adds the message body to the Data bundle so that we can retrieve
+         * Our Node.js server adds the message body to the remote message data so that we can retrieve
          * it an show a simple notification as we want.
          *
          * Notification resource parameters are mapped as follows:
@@ -52,8 +52,10 @@ public class MyGcmListenerService extends GcmListenerService {
          * Sound --> twi_sound
          * Action --> twi_action
          */
-        String body = data.getString("twi_body");
-        String title = data.getString("twi_title");
+        String from = message.getFrom();
+        Map<String,String> data = message.getData();
+        String body = data.get("twi_body");
+        String title = data.get("twi_title");
         Log.d(TAG, "From: " + from);
         Log.d(TAG, "Body: " + body);
 
@@ -85,7 +87,7 @@ public class MyGcmListenerService extends GcmListenerService {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
-        String title = "GCM Message";
+        String title = "FCM Message";
 
         if (pTitle != null){
             title = pTitle;
