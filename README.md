@@ -1,11 +1,24 @@
-# notifications-quickstart-android
 
-Twilio Notifications starter Android application in Java
+# Twilio Notify Quickstart for Android
 
 This application should give you a ready-made starting point for writing your
-own notification-integrated apps with Twilio Notifications. Before we begin, you will need to setup and run the associated user notifications quick start web app. The Android application will make a call to the web application to register itself and create a binding. The web app comes with a script `notify.js` that will send a notification through Twilio to the app, using the identity that you provide when you run the application.
+own notification-integrated apps with Twilio Notify. Before we begin, you will need to set up a web application that communicates with your mobile app.
 
-You can download the Node notifications web app from [here](https://github.com/TwilioDevEd/notifications-quickstart-node).
+## Download a Twilio SDK Starter Server project
+
+Luckily, we have built server applications for many languages:
+
+| Language  | GitHub Repo |
+| :-------------  |:------------- |
+PHP | [sdk-starter-php](https://github.com/TwilioDevEd/sdk-starter-php/)
+Ruby | [sdk-starter-ruby](https://github.com/TwilioDevEd/sdk-starter-ruby/)
+Python | [sdk-starter-python](https://github.com/TwilioDevEd/sdk-starter-python/)
+Node.js | [sdk-starter-node](https://github.com/TwilioDevEd/sdk-starter-node/)
+Java | [sdk-starter-java](https://github.com/TwilioDevEd/sdk-starter-java/)
+
+You'll only need to download one of those. Not sure which one to choose? The [Node.js](https://github.com/TwilioDevEd/sdk-starter-node/) server starter kit is pretty easy to set up and follow along with.
+
+Follow the directions in the README on one of the above servers, and get the web client up and running to make sure you have everything configured right for the demos you are interested in.  
 
 ## Setting Up The Application
 
@@ -28,14 +41,20 @@ Replace YOUR-SERVER-HOST-NAME with the address of your server - for instance, fr
 
 Make sure your notification quick start web app is running, and then go ahead and launch the app. You can run this app on a device or on the Android emulator. You will need to provide an identity and an endpoint to use on the app's only screen. Tap the button and send the request over to your notification web service, which will update Twilio with the device token that identifies this app on your phone, tablet or emulator.
 
-After that, run the notify.js script from the notifications quick start as a command line tool:
+The app uses 4 credentials to register your device for notifications.
 
-        node notify.js YOUR_IDENTITY
+Credential | Description
+---------- | -----------
+Identity | This is how the web app identifies an individual user as the receiver of notifications.
+Endpoint | This is a unique device ID and identity combination that can receive a message. (i.e Alice on her iPad is a different notification destination than Alice on her iPhone).
+Bindingtype | This lets the web app know which service to register with (APNS or GCM).
+Address | This is the unique device identifier of the mobile client.
 
-To receive a notification in your app.
+Once you've entered your URL, you can compile and run the app. Enter an identity in the text field that's presented. Once you tap register, the app will register your device with Twilio Notify and return a JSON response object if successful. After that, visit the Notify page on your server web application, and send a notification to the identity you registered as to receive a push notification in your app.
 
 That's it!
 
 ## License
 
 MIT
+
