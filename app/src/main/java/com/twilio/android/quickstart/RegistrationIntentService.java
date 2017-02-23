@@ -24,6 +24,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.twilio.notification.api.Binding;
 import com.twilio.notification.api.BindingResource;
 
 import java.io.IOException;
@@ -145,7 +146,8 @@ public class RegistrationIntentService extends IntentService {
      * @param token The new token.
      */
     private void sendRegistrationToServer(String identity, String endpoint, String token) throws IOException {
-        Call<Void> call = bindingResource.createBinding(identity, endpoint, token, "gcm");
+        Binding binding = new Binding(identity, endpoint, token, "fcm");
+        Call<Void> call = bindingResource.createBinding(binding);
         Response<Void> response = call.execute();
         if (!response.isSuccess()){
             throw new RuntimeException("Failed to send token to server. \n" + response.errorBody().string());
