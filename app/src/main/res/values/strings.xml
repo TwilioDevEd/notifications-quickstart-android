@@ -1,11 +1,6 @@
 <resources>
-    <string name="app_name">Twilio Quickstart</string>
-    <string name="gcm_send_message">Token retrieved and sent to server! You can now use gcmsender to
-        send downstream messages to this app.</string>
-    <string name="registering_message">Generating InstanceID token...</string>
-    <string name="token_error_message">An error occurred while either fetching the InstanceID token,
-        sending the fetched token to the server or subscribing to the PubSub topic. Please try
-        running the sample again.</string>
-    <string name="action_logout">Logout</string>
-    <string name="CreatingBindingText">Creating Binding...</string>
+    <string name="app_name">Notify Quickstart</string>
+    <string name="progress_dialog_message">Registering Binding...</string>
+    <string name="register_binding">Register Binding</string>
+    <string name="identity">Identity</string>
 </resources>
