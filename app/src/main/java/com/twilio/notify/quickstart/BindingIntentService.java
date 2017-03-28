@@ -109,6 +109,21 @@ public class BindingIntentService extends IntentService {
                 " identity: " + binding.identity +
                 " endpoint: " + binding.endpoint +
                 " address: " + binding.Address);
+
+        /*
+         * Make sure the Twilio SDK Starter URL has been updated
+         */
+        if (TwilioSDKStarterAPI.BASE_SERVER_URL.equals(getString(R.string.base_url_string))) {
+            String message = "Set the BASE_SERVER_URL in TwilioSDKStarterAPI.java";
+            Log.e(TAG, message);
+            bindingResultIntent.putExtra(MainActivity.BINDING_SUCCEEDED, false);
+            bindingResultIntent.putExtra(MainActivity.BINDING_RESPONSE, message);
+            // Notify the MainActivity that the registration ended
+            LocalBroadcastManager.getInstance(BindingIntentService.this)
+                    .sendBroadcast(bindingResultIntent);
+            return;
+        }
+
         Call<Void> call = TwilioSDKStarterAPI.registerBinding(binding);
         call.enqueue(new Callback<Void>() {
             @Override
