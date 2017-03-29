@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 resultTextView.setVisibility(View.VISIBLE);
-                progressDialog.hide();
+                progressDialog.dismiss();
                 registerBindingButton.setEnabled(true);
             }
         };
