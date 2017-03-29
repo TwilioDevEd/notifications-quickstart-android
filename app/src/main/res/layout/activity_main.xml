@@ -16,37 +16,40 @@
             android:layout_width="wrap_content"
             android:layout_height="72dp"
             android:layout_marginBottom="24dp"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/app_name" />
 
         <TextView
+            android:id="@+id/result_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/output_result"
             android:inputType="none"
             android:textColor="@color/primary"
-            android:textIsSelectable="false"
-            android:textSize="@dimen/abc_text_size_medium_material" />
+            android:textIsSelectable="false" />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/input_identity"
+            android:layout_marginBottom="8dp" >
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/identity_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Identity"
+                android:hint="@string/identity"
                 android:inputType="textPersonName" />
+
         </android.support.design.widget.TextInputLayout>
 
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btn_create_binding"
+            android:id="@+id/register_binding_button"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
             android:padding="12dp"
-            android:text="Create Binding"/>
+            android:text="@string/register_binding"/>
 
     </LinearLayout>
 </ScrollView>
