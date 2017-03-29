@@ -92,7 +92,9 @@ public class BindingIntentService extends IntentService {
              * Clear all the existing bindings from SharedPreferences and attempt to register
              * the new binding values.
              */
-            sharedPreferences.edit().clear().commit();
+            sharedPreferences.edit().remove(BindingSharedPreferences.IDENTITY).commit();
+            sharedPreferences.edit().remove(BindingSharedPreferences.ENDPOINT).commit();
+            sharedPreferences.edit().remove(BindingSharedPreferences.ADDRESS).commit();
             final Binding binding = new Binding(newIdentity, newEndpoint, newAddress, FCM_BINDING_TYPE);
             registerBinding(binding);
         }
