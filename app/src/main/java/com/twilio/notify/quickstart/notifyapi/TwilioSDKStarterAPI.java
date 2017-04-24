@@ -12,7 +12,7 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 
 public class TwilioSDKStarterAPI {
-    public final static String BASE_SERVER_URL = "https://f107bbc9.ngrok.io";
+    public final static String BASE_SERVER_URL = "YOUR_SDK_STARTER_SERVER_URL";
 
     /**
      * A resource defined to register Notify bindings using the sdk-starter projects available in
