@@ -10,6 +10,7 @@ import android.util.Log;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.twilio.notify.quickstart.notifyapi.TwilioSDKStarterAPI;
 import com.twilio.notify.quickstart.notifyapi.model.Binding;
+import com.twilio.notify.quickstart.notifyapi.model.CreateBindingResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,25 +40,22 @@ public class BindingIntentService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         bindingResultIntent = new Intent(MainActivity.BINDING_REGISTRATION);
-        // Load the old binding values from shared preferences if they exist
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String identity = sharedPreferences.getString(IDENTITY, null);
-        String endpoint = sharedPreferences.getString(ENDPOINT, null);
-        String address = sharedPreferences.getString(ADDRESS, null);
 
         // Set the new binding identity
         String newIdentity = intent.getStringExtra(IDENTITY);
+
+        // Load the old binding values from shared preferences if they exist
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String identity = sharedPreferences.getString(IDENTITY, null);
+        String address = sharedPreferences.getString(ADDRESS, null);
+
+
         if (newIdentity == null) {
             // If no identity was provided to us then we use the identity stored in shared preferences.
             newIdentity = identity;
         }
 
-        /*
-         * Generate a new endpoint based on the new identity and the instanceID. This ensures that we
-         * maintain stability of the endpoint even if the instanceID changes without the identity
-         * changing.
-         */
-        String newEndpoint = newIdentity + "@" + FirebaseInstanceId.getInstance().getId();
+        String endpoint = sharedPreferences.getString(ENDPOINT + newIdentity, null);
 
         /*
          * Obtain the new address based off the Firebase instance token
@@ -69,7 +67,7 @@ public class BindingIntentService extends IntentService {
          * were stored in shared preferences after the last successful binding registration.
          */
         boolean sameBinding =
-                newIdentity.equals(identity) && newEndpoint.equals(endpoint) && newAddress.equals(address);
+                newIdentity.equals(identity) && newAddress.equals(address);
 
         if (newIdentity == null) {
             Log.i(TAG, "A new binding registration was not performed because" +
@@ -93,9 +91,9 @@ public class BindingIntentService extends IntentService {
              * the new binding values.
              */
             sharedPreferences.edit().remove(BindingSharedPreferences.IDENTITY).commit();
-            sharedPreferences.edit().remove(BindingSharedPreferences.ENDPOINT).commit();
+            sharedPreferences.edit().remove(BindingSharedPreferences.ENDPOINT + newIdentity).commit();
             sharedPreferences.edit().remove(BindingSharedPreferences.ADDRESS).commit();
-            final Binding binding = new Binding(newIdentity, newEndpoint, newAddress, FCM_BINDING_TYPE);
+            final Binding binding = new Binding(newIdentity, endpoint, newAddress, FCM_BINDING_TYPE);
             registerBinding(binding);
         }
     }
@@ -126,14 +124,14 @@ public class BindingIntentService extends IntentService {
             return;
         }
 
-        Call<Void> call = TwilioSDKStarterAPI.registerBinding(binding);
-        call.enqueue(new Callback<Void>() {
+        Call<CreateBindingResponse> call = TwilioSDKStarterAPI.registerBinding(binding);
+        call.enqueue(new Callback<CreateBindingResponse>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<CreateBindingResponse> call, Response<CreateBindingResponse> response) {
                 if(response.isSuccess()) {
                     // Store binding in SharedPreferences upon success
                     sharedPreferences.edit().putString(IDENTITY, binding.identity).commit();
-                    sharedPreferences.edit().putString(ENDPOINT, binding.endpoint).commit();
+                    sharedPreferences.edit().putString(ENDPOINT + binding.identity, response.body().endpoint).commit();
                     sharedPreferences.edit().putString(ADDRESS, binding.Address).commit();
 
                     bindingResultIntent.putExtra(MainActivity.BINDING_SUCCEEDED, true);
@@ -150,7 +148,7 @@ public class BindingIntentService extends IntentService {
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<CreateBindingResponse> call, Throwable t) {
                 String message = "Binding failed " + t.getMessage();
                 Log.e(TAG, message);
                 bindingResultIntent.putExtra(MainActivity.BINDING_SUCCEEDED, false);
