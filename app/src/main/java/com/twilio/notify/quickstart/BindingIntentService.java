@@ -49,10 +49,18 @@ public class BindingIntentService extends IntentService {
         String identity = sharedPreferences.getString(IDENTITY, null);
         String address = sharedPreferences.getString(ADDRESS, null);
 
-
         if (newIdentity == null) {
             // If no identity was provided to us then we use the identity stored in shared preferences.
-            newIdentity = identity;
+            if (identity != null) {
+                newIdentity = identity;
+            } else {
+                /*
+                 * When the application is first installed refreshToken() may be called without the
+                 * user providing an identity. In this case we ignore the request to bind.
+                 */
+                Log.w(TAG, "No identity was provided.");
+                return;
+            }
         }
 
         String endpoint = sharedPreferences.getString(ENDPOINT + newIdentity, null);
