@@ -55,7 +55,7 @@ public class BindingIntentService extends IntentService {
                 newIdentity = identity;
             } else {
                 /*
-                 * When the application is first installed refreshToken() may be called without the
+                 * When the application is first installed onTokenRefresh() may be called without the
                  * user providing an identity. In this case we ignore the request to bind.
                  */
                 Log.w(TAG, "No identity was provided.");
