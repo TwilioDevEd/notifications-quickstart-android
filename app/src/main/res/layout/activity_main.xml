@@ -37,8 +37,8 @@
                 android:id="@+id/identity_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/identity"
-                android:inputType="textPersonName" />
+                android:hint="@string/identity_hint"
+                android:inputType="text" />
 
         </android.support.design.widget.TextInputLayout>
 
