@@ -34,14 +34,15 @@ android {
 
 dependencies {
     // Testing dependencies
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
-    androidTestCompile 'com.android.support.test:runner:0.5'
-    androidTestCompile 'com.android.support:support-annotations:25.1.0'
-    compile "com.google.firebase:firebase-messaging:10.0.1"
-    compile 'com.android.support:appcompat-v7:25.1.0'
-    compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
-    compile 'com.squareup.retrofit2:converter-jackson:2.0.0-beta4'
-    compile 'com.android.support:design:25.1.0'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support:support-annotations:27.1.1'
+    api 'com.google.firebase:firebase-core:16.0.3'
+    api 'com.google.firebase:firebase-messaging:17.3.2'
+    api 'com.android.support:appcompat-v7:27.1.1'
+    api 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
+    api 'com.squareup.retrofit2:converter-jackson:2.0.0-beta4'
+    api 'com.android.support:design:27.1.1'
 }
 
 apply plugin: 'com.google.gms.google-services'
