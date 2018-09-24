@@ -8,7 +8,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.twilio.notify.quickstart.notifyapi.TwilioSDKStarterAPI;
+import com.twilio.notify.quickstart.notifyapi.TwilioFunctionsAPI;
 import com.twilio.notify.quickstart.notifyapi.model.Binding;
 import com.twilio.notify.quickstart.notifyapi.model.CreateBindingResponse;
 
@@ -121,8 +121,8 @@ public class BindingIntentService extends IntentService {
         /*
          * Make sure the Twilio SDK Starter URL has been updated
          */
-        if (TwilioSDKStarterAPI.BASE_SERVER_URL.equals(getString(R.string.base_url_string))) {
-            String message = "Set the BASE_SERVER_URL in TwilioSDKStarterAPI.java";
+        if (TwilioFunctionsAPI.BASE_SERVER_URL.equals(getString(R.string.base_url_string))) {
+            String message = "Set the BASE_SERVER_URL in TwilioFunctionsAPI.java";
             Log.e(TAG, message);
             bindingResultIntent.putExtra(MainActivity.BINDING_SUCCEEDED, false);
             bindingResultIntent.putExtra(MainActivity.BINDING_RESPONSE, message);
@@ -132,7 +132,7 @@ public class BindingIntentService extends IntentService {
             return;
         }
 
-        Call<CreateBindingResponse> call = TwilioSDKStarterAPI.registerBinding(binding);
+        Call<CreateBindingResponse> call = TwilioFunctionsAPI.registerBinding(binding);
         call.enqueue(new Callback<CreateBindingResponse>() {
             @Override
             public void onResponse(Call<CreateBindingResponse> call, Response<CreateBindingResponse> response) {

@@ -1,5 +1,6 @@
 package com.twilio.notify.quickstart.fcm;
 
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -75,6 +76,19 @@ public class NotifyFirebaseMessagingService extends FirebaseMessagingService {
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        //if this is an Android Oreo device, set the notification channel
+        String CHANNEL_ID = "notify_channel";
+        String CHANNEL_NAME = "Notify Channel";
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O)
+        {
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
+                    "CHANNEL_NAME", NotificationManager.IMPORTANCE_LOW);
+            notificationBuilder.setChannelId(CHANNEL_ID);
+            notificationManager.createNotificationChannel(channel);
+        }
+
 
         notificationManager.notify(0, notificationBuilder.build());
     }

@@ -1,27 +1,24 @@
 # Twilio Notify Quickstart for Android
 
 This application should give you a ready-made starting point for writing your
-own notification integrated app with Twilio Notify. Before we begin, you will need to set up a
-web server application that communicates with your mobile app.
+own notification integrated app with Twilio Notify. 
 
-## Download a Twilio SDK Starter Server project
+## Gather account information
 
-You can download one of the web server application in these languages:
+We need to get the necessary information from our Twilio account. Here's what we'll need:
 
-| Language  | GitHub Repo |
-| :-------------  |:------------- |
-PHP | [sdk-starter-php](https://github.com/TwilioDevEd/sdk-starter-php/)
-Ruby | [sdk-starter-ruby](https://github.com/TwilioDevEd/sdk-starter-ruby/)
-Python | [sdk-starter-python](https://github.com/TwilioDevEd/sdk-starter-python/)
-Node.js | [sdk-starter-node](https://github.com/TwilioDevEd/sdk-starter-node/)
-Java | [sdk-starter-java](https://github.com/TwilioDevEd/sdk-starter-java/)
+Config Value  | Description
+:-------------  |:-------------
+Service Instance SID | A [service](https://www.twilio.com/docs/api/notifications/rest/services) instance where all the data for our application is stored and scoped. You can create one in the [console](https://www.twilio.com/console/notify/services).
 
-You'll only need to download one of those. Not sure which one to choose?
-The [Node.js](https://github.com/TwilioDevEd/sdk-starter-node/) server starter kit
-is pretty easy to set up and follow along with.
+You will also need to create a push credential on the Twilio Console, and then configure it on your Notify service. You can [upload your push credentials here](https://www.twilio.com/console/notify/credentials/create). If you haven't set up the Firebase Cloud Messaging Service (FCM) for your app, you can do so by following [the Android push notification guide](https://www.twilio.com/docs/notify/configure-android-push-notifications).
 
-Follow the directions in the README on one of the above servers, and get the web server up
-and running to make sure you have everything configured right for the demos you are interested in.
+## Set up Twilio Functions
+
+The sample mobile app is already set up to communicate with Twilio Functions to register a device for notifications. You just need to create two Functions in your account from a template, and then specify the URL for one of those Twilio Functions in the source code to the app.
+
+To get started with this, create a new Twilio Function on the [Twilio Console's Manage Functions page](https://www.twilio.com/console/runtime/functions/manage). Choose the Twilio Notify Quickstart template from the list of templates.
+Use the Notify service SID you collected in the previous section for the only required configuration parameter for the template.
 
 ## Setting Up The Application
 
@@ -40,25 +37,21 @@ project you just downloaded. This file gives your app access credentials to FCM.
 
 Now, open the app in Android studio by selecting the `build.gradle` file in the root directory.
 
-Next, in the `TwilioSDKStarterAPI.java` file, add your server url:
+Next, in the `TwilioSDKStarterAPI.java` file, add your Twilio Functions url - just the domain, without the trailing slash (like this - https://sturdy-concrete-1234.twil.io):
 
-        private static String BASE_SERVER_URL = "YOUR_SDK_STARTER_SERVER_URL";
+        private static String BASE_SERVER_URL = "YOUR_TWILIO_FUNCTIONS_URL";
 
-Make sure your notification quick start web app is running, and then go ahead and launch the app. You can run this app on a device or on the Android emulator. You will need to provide an identity and an endpoint to use on the app's only screen. Tap the button and send the request over to your notification web service, which will update Twilio with the device token that identifies this app on your phone, tablet or emulator.
+Make sure your notification quick start web app is running, and then go ahead and launch the app. You can run this app on a device or on the Android emulator. You will need to provide an identity and an endpoint to use on the app's only screen. 
 
-The app uses 4 credentials to register your device for notifications.
+Note that user identities for Notify should not be Personally Identifiable Information (PII), such as names. 
 
-Credential | Description
----------- | -----------
-Identity | This is how the web app identifies an individual user as the receiver of notifications.
-Endpoint | This is a unique device ID and identity combination that can receive a message. (i.e Alice on her iPad is a different notification destination than Alice on her iPhone).
-Address | This is the unique device identifier of the mobile client.
-Bindingtype | This lets the web app know which service to register with (APNS or FCM).
+Once you tap `Register Binding`, the app will register your device with your Notify service and return a JSON response object to the app if successful. 
 
-Once you've entered your URL, you can compile and run the app. Enter an identity in the text field
-that's presented. Once you tap register, the app will register your device with Twilio Notify and
-return a JSON response object if successful. After that, visit the Notify page on your server web application,
-and send a notification to the identity you registered as to receive a push notification in your app.
+After that, send a notification to the identity you registered so that you will receive a push notification in your app. 
+
+You can call the Twilio Function directly with an identity parameter and a body parameter, like this:
+
+    https://sturdy-concrete-1234.twil.io/send-notification?identity=user1&body=Hello
 
 That's it!
 
