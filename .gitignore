@@ -6,3 +6,8 @@ build/
 .DS_Store
 /captures
 /app/google-services.json
+.project
+.settings
+.classpath
+app/.project
+app/.settings
