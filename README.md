@@ -37,15 +37,15 @@ project you just downloaded. This file gives your app access credentials to FCM.
 
 Now, open the app in Android studio by selecting the `build.gradle` file in the root directory.
 
-Next, in the `TwilioSDKStarterAPI.java` file, add your Twilio Functions url - just the domain, without the trailing slash (like this - https://sturdy-concrete-1234.twil.io):
+Next, in the `TwilioFunctionsAPI.java` file, add your Twilio Functions url - just the domain, without the trailing slash (like this - https://sturdy-concrete-1234.twil.io):
 
         private static String BASE_SERVER_URL = "YOUR_TWILIO_FUNCTIONS_URL";
 
-Make sure your notification quick start web app is running, and then go ahead and launch the app. You can run this app on a device or on the Android emulator. You will need to provide an identity and an endpoint to use on the app's only screen. 
+Go ahead and launch the app. You can run this app on a device or on the Android emulator. You will need to provide an identity and an endpoint to use on the app's only screen. 
 
 Note that user identities for Notify should not be Personally Identifiable Information (PII), such as names. 
 
-Once you tap `Register Binding`, the app will register your device with your Notify service and return a JSON response object to the app if successful. 
+Once you tap `Register Binding`, the app will call your Twilio Function to register your device with your Notify service and return a JSON response object to the app if successful. 
 
 After that, send a notification to the identity you registered so that you will receive a push notification in your app. 
 
