@@ -4,5 +4,5 @@
     <string name="register_binding">Register Binding</string>
     <string name="identity">Identity</string>
     <string name="identity_hint">Identity (Do not use PII, such as name)</string>
-    <string name="base_url_string">YOUR_SDK_STARTER_SERVER_URL</string>
+    <string name="base_url_string">YOUR_TWILIO_FUNCTIONS_URL</string>
 </resources>

@@ -12,7 +12,9 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 
 public class TwilioSDKStarterAPI {
-    public final static String BASE_SERVER_URL = "YOUR_SDK_STARTER_SERVER_URL";
+    // The URL below should be the domain for your Twilio Functions, without the trailing slash:
+    // Example: https://sturdy-concrete-1234.twil.io
+    public final static String BASE_SERVER_URL = "YOUR_TWILIO_FUNCTIONS_URL";
 
     /**
      * A resource defined to register Notify bindings using the sdk-starter projects available in
@@ -21,7 +23,7 @@ public class TwilioSDKStarterAPI {
      * https://github.com/TwilioDevEd?q=sdk-starter
      */
     interface SDKStarterService {
-        @POST("/register")
+        @POST("/register-binding")
         Call<CreateBindingResponse> register(@Body Binding binding);
     }
 
